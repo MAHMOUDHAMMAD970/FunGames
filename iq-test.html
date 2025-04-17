@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IQ Test</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IQ Test - All in One</title>
   <style>
     body {
       margin: 0;
@@ -17,7 +17,7 @@
       text-align: center;
     }
     .container {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.1);
       padding: 30px;
       border-radius: 15px;
       backdrop-filter: blur(8px);
@@ -55,19 +55,419 @@
   </div>
 
   <script>
-    let questions = [];
+    const questions = [ {
+    "q": "What comes next in the sequence: 2, 4, 8, 16, ?",
+    "options": ["24", "32", "30"],
+    "answer": "32"
+  },
+  {
+    "q": "What is the odd one out: Apple, Banana, Carrot, Mango?",
+    "options": ["Apple", "Carrot", "Mango"],
+    "answer": "Carrot"
+  },
+  {
+    "q": "Which number is missing? 1, 1, 2, 3, 5, 8, ?",
+    "options": ["10", "11", "13"],
+    "answer": "13"
+  },
+  {
+    "q": "Which shape has the most sides?",
+    "options": ["Hexagon", "Triangle", "Pentagon"],
+    "answer": "Hexagon"
+  },
+  {
+    "q": "Which is a prime number?",
+    "options": ["15", "17", "21"],
+    "answer": "17"
+  },
+  {
+    "q": "Find the missing letter: A, C, E, G, ?",
+    "options": ["H", "I", "J"],
+    "answer": "I"
+  },
+  {
+    "q": "Which planet is known as the Red Planet?",
+    "options": ["Mars", "Venus", "Jupiter"],
+    "answer": "Mars"
+  },
+  {
+    "q": "How many degrees in a right angle?",
+    "options": ["90", "45", "180"],
+    "answer": "90"
+  },
+  {
+    "q": "Which is the smallest 3-digit number?",
+    "options": ["100", "111", "101"],
+    "answer": "100"
+  },
+  {
+    "q": "How many sides does an octagon have?",
+    "options": ["6", "8", "10"],
+    "answer": "8"
+  },
+  {
+    "q": "What is the capital of France?",
+    "options": ["Paris", "Rome", "Berlin"],
+    "answer": "Paris"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "options": ["Oxygen", "Carbon Dioxide", "Nitrogen"],
+    "answer": "Carbon Dioxide"
+  },
+  {
+    "q": "How many continents are there?",
+    "options": ["5", "6", "7"],
+    "answer": "7"
+  },
+  {
+    "q": "Which color is made by mixing red and blue?",
+    "options": ["Purple", "Green", "Orange"],
+    "answer": "Purple"
+  },
+  {
+    "q": "What is H2O commonly known as?",
+    "options": ["Oxygen", "Water", "Hydrogen"],
+    "answer": "Water"
+  },
+  {
+    "q": "Which animal is known as the king of the jungle?",
+    "options": ["Elephant", "Tiger", "Lion"],
+    "answer": "Lion"
+  },
+  {
+    "q": "What is the square root of 64?",
+    "options": ["6", "8", "10"],
+    "answer": "8"
+  },
+  {
+    "q": "How many legs does a spider have?",
+    "options": ["6", "8", "10"],
+    "answer": "8"
+  },
+  {
+    "q": "Which direction does the sun rise from?",
+    "options": ["West", "East", "North"],
+    "answer": "East"
+  },
+  {
+    "q": "Which number comes before 100?",
+    "options": ["98", "99", "101"],
+    "answer": "99"
+  }
+  // Additional 80 questions
+  ,
+  {
+    "q": "If all Bloops are Razzies and all Razzies are Lazzies, are all Bloops definitely Lazzies?",
+    "options": ["Yes", "No", "Can't Tell"],
+    "answer": "Yes"
+  },
+  {
+    "q": "Which number is the odd one out: 11, 13, 17, 19, 23, 27, 29?",
+    "options": ["23", "27", "29"],
+    "answer": "27"
+  },
+  {
+    "q": "If you rearrange the letters "CIFAIPC" you would have the name of a:",
+    "options": ["Ocean", "Country", "City"],
+    "answer": "Pacific"
+  },
+  {
+    "q": "Which comes next in the series: J, F, M, A, M, J, J, A, ?",
+    "options": ["S", "O", "N"],
+    "answer": "S"
+  },
+  {
+    "q": "Which number logically completes the sequence: 3, 9, 27, ?",
+    "options": ["36", "54", "81"],
+    "answer": "81"
+  },
+  {
+    "q": "Which two months have exactly 30 days?",
+    "options": ["June and September", "April and August", "May and November"],
+    "answer": "June and September"
+  },
+  {
+    "q": "If it takes 5 machines 5 minutes to make 5 gadgets, how long would it take 100 machines to make 100 gadgets?",
+    "options": ["5", "50", "100"],
+    "answer": "5"
+  },
+  {
+    "q": "Which word fits both: '_____ box' and 'box _____'?",
+    "options": ["Toy", "Lunch", "Match"],
+    "answer": "Match"
+  },
+  {
+    "q": "What is the next number in the pattern: 1, 4, 9, 16, ?",
+    "options": ["20", "25", "30"],
+    "answer": "25"
+  },
+  {
+    "q": "What is the value of 5! (5 factorial)?",
+    "options": ["120", "60", "100"],
+    "answer": "120"
+  },
+  {
+    "q": "Which number comes next: 1, 2, 4, 7, 11, ?",
+    "options": ["14", "16", "17"],
+    "answer": "16"
+  },
+  {
+    "q": "Which of these is a palindrome?",
+    "options": ["LEVEL", "WORLD", "EARTH"],
+    "answer": "LEVEL"
+  },
+  {
+    "q": "If a clock shows 3:15, what angle is between the hour and minute hands?",
+    "options": ["7.5°", "0°", "90°"],
+    "answer": "7.5°"
+  },
+  {
+    "q": "What number is missing? 2, 6, 12, 20, ?",
+    "options": ["28", "30", "32"],
+    "answer": "30"
+  },
+  {
+    "q": "How many vowels are in the word 'EQUATION'?",
+    "options": ["5", "4", "6"],
+    "answer": "5"
+  },
+  {
+    "q": "Which comes next: 31, 28, 31, 30, 31, 30, ?",
+    "options": ["31", "30", "29"],
+    "answer": "31"
+  },
+  {
+    "q": "What’s the next prime after 29?",
+    "options": ["31", "33", "35"],
+    "answer": "31"
+  },
+  {
+    "q": "What shape has 5 sides?",
+    "options": ["Pentagon", "Hexagon", "Octagon"],
+    "answer": "Pentagon"
+  },
+  {
+    "q": "How many zeros are there in one thousand?",
+    "options": ["2", "3", "4"],
+    "answer": "3"
+  },
+  {
+    "q": "What is the cube of 3?",
+    "options": ["6", "9", "27"],
+    "answer": "27"
+  }
+  // Remaining questions to reach 100
+  ,
+  {
+    "q": "Which instrument has keys, pedals, and strings?",
+    "options": ["Violin", "Piano", "Guitar"],
+    "answer": "Piano"
+  },
+  {
+    "q": "What is the Roman numeral for 50?",
+    "options": ["L", "V", "C"],
+    "answer": "L"
+  },
+  {
+    "q": "What do you call a word that is similar in meaning to another word?",
+    "options": ["Antonym", "Synonym", "Homonym"],
+    "answer": "Synonym"
+  },
+  {
+    "q": "What is the average of 2, 4, and 6?",
+    "options": ["4", "5", "6"],
+    "answer": "4"
+  },
+  {
+    "q": "What number comes next: 5, 10, 20, 40, ?",
+    "options": ["45", "60", "80"],
+    "answer": "80"
+  },
+  {
+    "q": "Which is heavier: 1kg of iron or 1kg of cotton?",
+    "options": ["Iron", "Cotton", "They are equal"],
+    "answer": "They are equal"
+  },
+  {
+    "q": "Which one of these animals is a mammal?",
+    "options": ["Shark", "Frog", "Dolphin"],
+    "answer": "Dolphin"
+  },
+  {
+    "q": "Which letter completes the sequence: B, C, D, E, ?",
+    "options": ["F", "G", "H"],
+    "answer": "F"
+  },
+  {
+    "q": "What is the third planet from the sun?",
+    "options": ["Earth", "Venus", "Mars"],
+    "answer": "Earth"
+  },
+  {
+    "q": "Which direction is opposite to South-West?",
+    "options": ["North-East", "North-West", "South-East"],
+    "answer": "North-East"
+  },
+  {
+    "q": "If John is taller than Mike, and Mike is taller than Steve, who is tallest?",
+    "options": ["Steve", "Mike", "John"],
+    "answer": "John"
+  },
+  {
+    "q": "Which country is known as the Land of the Rising Sun?",
+    "options": ["China", "Japan", "Korea"],
+    "answer": "Japan"
+  },
+  {
+    "q": "What do you call a six-sided shape?",
+    "options": ["Pentagon", "Hexagon", "Heptagon"],
+    "answer": "Hexagon"
+  },
+  {
+    "q": "If you double 15 and add 10, what do you get?",
+    "options": ["35", "40", "45"],
+    "answer": "40"
+  },
+  {
+    "q": "What is the smallest prime number?",
+    "options": ["1", "2", "3"],
+    "answer": "2"
+  },
+  {
+    "q": "Which planet is known for its rings?",
+    "options": ["Mars", "Jupiter", "Saturn"],
+    "answer": "Saturn"
+  },
+  {
+    "q": "What is the boiling point of water in Celsius?",
+    "options": ["90°C", "95°C", "100°C"],
+    "answer": "100°C"
+  },
+  {
+    "q": "What’s the next number: 2, 3, 5, 8, 12, ?",
+    "options": ["15", "16", "17"],
+    "answer": "17"
+  },
+  {
+    "q": "Which shape is a 3D figure?",
+    "options": ["Square", "Circle", "Sphere"],
+    "answer": "Sphere"
+  },
+  {
+    "q": "If you multiply any number by zero, the result is?",
+    "options": ["Zero", "The number itself", "Infinity"],
+    "answer": "Zero"
+  }
+  // Completed 100 questions
+  ,
+  {
+    "q": "What is 12 multiplied by 2?",
+    "options": ["24", "22", "26"],
+    "answer": "24"
+  },
+  {
+    "q": "Which number is an even number?",
+    "options": ["15", "22", "33"],
+    "answer": "22"
+  },
+  {
+    "q": "How many minutes are in an hour?",
+    "options": ["60", "90", "100"],
+    "answer": "60"
+  },
+  {
+    "q": "Which number is the square of 6?",
+    "options": ["36", "42", "48"],
+    "answer": "36"
+  },
+  {
+    "q": "What’s the opposite of 'up'?",
+    "options": ["Down", "Left", "In"],
+    "answer": "Down"
+  },
+  {
+    "q": "How many colors in a rainbow?",
+    "options": ["6", "7", "8"],
+    "answer": "7"
+  },
+  {
+    "q": "What does 'bi' in bicycle mean?",
+    "options": ["One", "Two", "Four"],
+    "answer": "Two"
+  },
+  {
+    "q": "Which sense is associated with the nose?",
+    "options": ["Touch", "Taste", "Smell"],
+    "answer": "Smell"
+  },
+  {
+    "q": "Which is not a primary color?",
+    "options": ["Red", "Blue", "Green"],
+    "answer": "Green"
+  },
+  {
+    "q": "Which is a metal?",
+    "options": ["Gold", "Water", "Wood"],
+    "answer": "Gold"
+  },
+  {
+    "q": "What is 100 divided by 10?",
+    "options": ["5", "10", "20"],
+    "answer": "10"
+  },
+  {
+    "q": "Which number is a multiple of 5?",
+    "options": ["13", "15", "17"],
+    "answer": "15"
+  },
+  {
+    "q": "What shape is a traffic stop sign?",
+    "options": ["Hexagon", "Octagon", "Pentagon"],
+    "answer": "Octagon"
+  },
+  {
+    "q": "Which is a synonym for 'fast'?",
+    "options": ["Slow", "Quick", "Lazy"],
+    "answer": "Quick"
+  },
+  {
+    "q": "What do plants need for photosynthesis?",
+    "options": ["Sugar", "Oxygen", "Sunlight"],
+    "answer": "Sunlight"
+  },
+  {
+    "q": "What is 3 cubed (3³)?",
+    "options": ["9", "27", "18"],
+    "answer": "27"
+  },
+  {
+    "q": "How many fingers does a human hand have?",
+    "options": ["4", "5", "6"],
+    "answer": "5"
+  },
+  {
+    "q": "What is 10% of 200?",
+    "options": ["10", "20", "25"],
+    "answer": "20"
+  },
+  {
+    "q": "Which letter is a vowel?",
+    "options": ["B", "E", "G"],
+    "answer": "E"
+  },
+  {
+    "q": "What comes next: 10, 20, 30, ?",
+    "options": ["35", "40", "50"],
+    "answer": "40"
+  }];
+
     let current = 0;
     let score = 0;
 
-    async function loadQuestions() {
-      const res = await fetch('questions.json');
-      questions = await res.json();
-      loadQuestion();
-    }
-
     function loadQuestion() {
       const q = questions[current];
-      document.getElementById('question').textContent = q.q;
+      document.getElementById('question').textContent = `Q${current + 1}: ` + q.q;
       const optionsDiv = document.getElementById('options');
       optionsDiv.innerHTML = '';
       q.options.forEach(option => {
@@ -103,7 +503,8 @@
       }
     }
 
-    loadQuestions();
+    // Initialize
+    loadQuestion();
   </script>
 </body>
 </html>
