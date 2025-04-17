@@ -21,10 +21,12 @@
       padding: 30px;
       border-radius: 15px;
       backdrop-filter: blur(8px);
+      width: 90%;
+      max-width: 600px;
     }
     button {
       padding: 10px 20px;
-      margin-top: 20px;
+      margin: 10px;
       border-radius: 8px;
       border: none;
       cursor: pointer;
@@ -35,26 +37,73 @@
     button:hover {
       background: #ffffff40;
     }
+    #nextBtn {
+      margin-top: 20px;
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🧠 Quick IQ Question</h1>
-    <p>What comes next in the sequence: 2, 4, 8, 16, ?</p>
-    <button onclick="checkAnswer('32')">32</button>
-    <button onclick="checkAnswer('24')">24</button>
-    <button onclick="checkAnswer('30')">30</button>
+    <h1>🧠 IQ Test</h1>
+    <div id="question-container">
+      <p id="question">Loading...</p>
+      <div id="options"></div>
+    </div>
+    <button id="nextBtn" onclick="nextQuestion()">Next</button>
     <p id="result"></p>
   </div>
+
   <script>
-    function checkAnswer(answer) {
+    let questions = [];
+    let current = 0;
+    let score = 0;
+
+    async function loadQuestions() {
+      const res = await fetch('questions.json');
+      questions = await res.json();
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = questions[current];
+      document.getElementById('question').textContent = q.q;
+      const optionsDiv = document.getElementById('options');
+      optionsDiv.innerHTML = '';
+      q.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(option);
+        optionsDiv.appendChild(btn);
+      });
+      document.getElementById('result').textContent = '';
+      document.getElementById('nextBtn').style.display = 'none';
+    }
+
+    function checkAnswer(selected) {
+      const correct = questions[current].answer;
       const result = document.getElementById('result');
-      if (answer === '32') {
+      if (selected === correct) {
+        score++;
         result.textContent = '✅ Correct!';
       } else {
-        result.textContent = '❌ Try again!';
+        result.textContent = `❌ Wrong! Correct answer is: ${correct}`;
+      }
+      document.querySelectorAll('#options button').forEach(btn => btn.disabled = true);
+      document.getElementById('nextBtn').style.display = 'inline-block';
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        loadQuestion();
+      } else {
+        document.getElementById('question-container').innerHTML = `<h2>🎉 Quiz Complete!</h2><p>Your score is ${score} out of ${questions.length}.</p>`;
+        document.getElementById('nextBtn').style.display = 'none';
       }
     }
+
+    loadQuestions();
   </script>
 </body>
 </html>
