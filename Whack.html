@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whack-a-Mole</title>
+  <style>
+    body {
+      background: #2c3e50;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .cell {
+      width: 100px;
+      height: 100px;
+      background: #34495e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>👊 Whack-a-Mole</h1>
+  <p>Click the 🐹 before it disappears!</p>
+  <div class="grid" id="grid"></div>
+  <p id="score">Score: 0</p>
+
+  <script>
+    const grid = document.getElementById('grid');
+    const scoreDisplay = document.getElementById('score');
+    let score = 0;
+    let activeCell = null;
+
+    function randomCell() {
+      const cells = document.querySelectorAll('.cell');
+      if (activeCell !== null) {
+        cells[activeCell].textContent = '';
+      }
+      const index = Math.floor(Math.random() * cells.length);
+      cells[index].textContent = '🐹';
+      activeCell = index;
+    }
+
+    function startGame() {
+      for (let i = 0; i < 9; i++) {
+        const div = document.createElement('div');
+        div.classList.add('cell');
+        div.onclick = () => {
+          if (div.textContent === '🐹') {
+            score++;
+            scoreDisplay.textContent = `Score: ${score}`;
+            div.textContent = '';
+          }
+        };
+        grid.appendChild(div);
+      }
+      setInterval(randomCell, 800);
+    }
+
+    startGame();
+  </script>
+</body>
+</html>

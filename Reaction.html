@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reaction Time Test</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to right, #373b44, #4286f4);
+      color: white;
+      flex-direction: column;
+      text-align: center;
+    }
+    #screen {
+      width: 300px;
+      height: 200px;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚡ Reaction Time Test</h1>
+  <p>Click when the screen turns green!</p>
+  <div id="screen">Wait for green...</div>
+  <p id="result"></p>
+  <script>
+    const screen = document.getElementById('screen');
+    const result = document.getElementById('result');
+    let startTime;
+    let timeout;
+
+    screen.onclick = () => {
+      if (screen.style.backgroundColor === 'green') {
+        const endTime = new Date().getTime();
+        const reaction = endTime - startTime;
+        result.textContent = `Your reaction time: ${reaction} ms`;
+        screen.style.backgroundColor = 'gray';
+        screen.textContent = 'Click to try again';
+      } else {
+        screen.textContent = 'Wait for green...';
+        result.textContent = '';
+        screen.style.backgroundColor = 'gray';
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          screen.style.backgroundColor = 'green';
+          screen.textContent = 'CLICK!';
+          startTime = new Date().getTime();
+        }, Math.random() * 3000 + 2000);
+      }
+    };
+  </script>
+</body>
+</html>

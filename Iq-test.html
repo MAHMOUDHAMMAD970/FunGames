@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IQ Test</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: linear-gradient(135deg, #2C3E50, #4CA1AF);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      text-align: center;
+    }
+    .container {
+      background: rgba(255,255,255,0.1);
+      padding: 30px;
+      border-radius: 15px;
+      backdrop-filter: blur(8px);
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #ffffff20;
+      color: white;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #ffffff40;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 Quick IQ Question</h1>
+    <p>What comes next in the sequence: 2, 4, 8, 16, ?</p>
+    <button onclick="checkAnswer('32')">32</button>
+    <button onclick="checkAnswer('24')">24</button>
+    <button onclick="checkAnswer('30')">30</button>
+    <p id="result"></p>
+  </div>
+  <script>
+    function checkAnswer(answer) {
+      const result = document.getElementById('result');
+      if (answer === '32') {
+        result.textContent = '✅ Correct!';
+      } else {
+        result.textContent = '❌ Try again!';
+      }
+    }
+  </script>
+</body>
+</html>
