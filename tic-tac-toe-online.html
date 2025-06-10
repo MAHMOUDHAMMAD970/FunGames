@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tic Tac Toe Online</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      overflow: hidden;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 20px auto;
+    }
+
+    .cell {
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      font-size: 2.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .cell:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    .cell.x {
+      color: #ff4b2b;
+      animation: pop 0.3s ease;
+    }
+
+    .cell.o {
+      color: #1cb5e0;
+      animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .status {
+      margin: 10px 0;
+      font-size: 1.2rem;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #ffffff20;
+      color: white;
+      cursor: pointer;
+      font-size: 1rem;
+      backdrop-filter: blur(5px);
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #ffffff40;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .popup-content {
+      background: #ffffff10;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+      color: #fff;
+      animation: pop 0.3s ease-in-out;
+    }
+
+    .popup-content h2 {
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+
+    @media (max-width: 500px) {
+      .board {
+        grid-template-columns: repeat(3, 80px);
+        grid-template-rows: repeat(3, 80px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tic Tac Toe Online</h1>
+    <div class="status" id="status">Connecting...</div>
+    <div class="board" id="board"></div>
+    <button onclick="restartGame()">Restart</button>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2 id="popup-message"></h2>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const board = document.getElementById('board');
+    const status = document.getElementById('status');
+
+    let cells = ['', '', '', '', '', '', '', '', ''];
+    let mySymbol = null;
+    let currentPlayer = 'X';
+    let gameActive = false;
+
+    const winCombos = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+
+    function renderBoard() {
+      board.innerHTML = '';
+      cells.forEach((val, i) => {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        if (val) cell.classList.add(val.toLowerCase());
+        cell.textContent = val;
+        cell.addEventListener('click', () => handleCellClick(i));
+        board.appendChild(cell);
+      });
+    }
+
+    function handleCellClick(i) {
+      if (!gameActive || cells[i] || mySymbol !== currentPlayer) return;
+      cells[i] = mySymbol;
+      renderBoard();
+      if (checkWinner(mySymbol)) {
+        showPopup('🎉 You win!');
+        gameActive = false;
+      } else if (isDraw()) {
+        showPopup("😐 It's a draw!");
+        gameActive = false;
+      } else {
+        currentPlayer = mySymbol === 'X' ? 'O' : 'X';
+        status.textContent = "Opponent's turn (" + currentPlayer + ")";
+        socket.emit('makeMove', i);
+      }
+    }
+
+    function checkWinner(player) {
+      return winCombos.some(([a,b,c]) =>
+        cells[a] === player && cells[b] === player && cells[c] === player
+      );
+    }
+
+    function isDraw() {
+      return cells.every(cell => cell);
+    }
+
+    function showPopup(message) {
+      document.getElementById('popup-message').textContent = message;
+      document.getElementById('popup').style.display = 'flex';
+    }
+
+    function restartGame() {
+      location.reload();
+    }
+
+    socket.emit('joinGame');
+
+    socket.on('waiting', () => {
+      status.textContent = 'Waiting for opponent...';
+    });
+
+    socket.on('gameStart', ({ symbol }) => {
+      mySymbol = symbol;
+      gameActive = true;
+      currentPlayer = 'X';
+      status.textContent = mySymbol === 'X' ? 'Your turn (❌)' : "Opponent's turn (❌)";
+      renderBoard();
+    });
+
+    socket.on('opponentMove', (i) => {
+      const opponent = mySymbol === 'X' ? 'O' : 'X';
+      cells[i] = opponent;
+      renderBoard();
+      if (checkWinner(opponent)) {
+        showPopup('🤖 Opponent wins!');
+        gameActive = false;
+      } else if (isDraw()) {
+        showPopup("😐 It's a draw!");
+        gameActive = false;
+      } else {
+        currentPlayer = mySymbol;
+        status.textContent = 'Your turn (' + mySymbol + ')';
+      }
+    });
+
+    socket.on('opponentLeft', () => {
+      showPopup('Opponent left the game');
+      gameActive = false;
+    });
+
+    renderBoard();
+  </script>
+</body>
+</html>
